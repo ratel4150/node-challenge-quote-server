@@ -1,4 +1,5 @@
 const { response } = require("express");
+const _ = require("lodash");  
 // server.js
 // This is where your node app starts
 
@@ -8,6 +9,7 @@ const app = express();
 
 //load the quotes JSON
 const quotes = require("./quotes.json");
+const quotesArray=require("./quotes")
 
 // Now register handlers for some routes:
 //   /                  - Return some helpful welcome info (text)
@@ -20,7 +22,10 @@ app.get("/quotes", function (request, response) {
 });
 
 app.get("/quotes/random", function (request, response) {
-  response.send(pickFromArray(quotes));
+  /* response.send(pickFromArray(quotes)); */
+  
+  let a =_.sample(quotes)
+  response.send(a);
 });
 
 //Challengue 2
