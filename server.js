@@ -14,19 +14,49 @@ const quotes = require("./quotes.json");
 //   /quotes            - Should return all quotes (json)
 //   /quotes/random     - Should return ONE quote (json)
 
-
 //START OF YOUR CODE...
 app.get("/quotes", function (request, response) {
-  
   response.send(quotes);
-  
 });
 
-app.get("/quotes/:value",function (request,response) {
-  let number=Number(request.params.value)
-  response.send(quotes[number])
+app.get("/quotes/random", function (request, response) {
+  response.send(pickFromArray(quotes));
+});
+
+//Challengue 2
+
+app.get("/quotes/search", function (request, response) {
+  let term = request.query.term;
+  function filter(arrayTOFilter) {
+    const arrayFilter = arrayTOFilter
+    .filter((quote) => {
+      return quote.quote.includes(term);
+    })
+    .map((quote) => {
+      return quote;
+    });
   
-})
+    return arrayFilter
+    
+  }
+
+  switch (term.toLowerCase()) {
+    case term.toString():
+     
+      response.send(filter(quotes));
+
+      break;
+   
+
+    default:
+      const emptyArray=[]
+      response.send(emptyArray);
+      
+      break;
+  }
+});
+
+
 
 //...END OF YOUR CODE
 
@@ -41,6 +71,6 @@ function pickFromArray(arr) {
 //Start our server so that it listens for HTTP requests!
 let port = 5000;
 
-app.listen( port, function () {
+app.listen(port, function () {
   console.log("Your app is listening on port " + port);
 });
